@@ -2,7 +2,7 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import get_peft_model, LoraConfig, TaskType
 from configs.config import config
-from .lora_utils import apply_lora_config
+from .lora_utils import apply_lora, apply_qlora
 
 def load_tokenizer():
     return AutoTokenizer.from_pretrained(config.model.model_name, use_fast=True)
@@ -17,6 +17,6 @@ def load_model():
     model.lm_head.out_features = 3  # e.g. 3-class sentiment (positive, negative, neutral)
 
     if config.model.use_lora:
-        model = apply_lora_config(model)
+        model = apply_lora(model)
 
     return model
