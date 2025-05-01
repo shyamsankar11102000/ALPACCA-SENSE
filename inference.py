@@ -3,6 +3,9 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 from configs.config import config
+from utils.environment import configure_environment
+
+device = configure_environment()
 
 def load_model_and_tokenizer():
     """Loads the base model and applies the LoRA adapter."""

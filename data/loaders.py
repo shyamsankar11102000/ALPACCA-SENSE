@@ -15,11 +15,6 @@ def load_datasets(tokenizer: PreTrainedTokenizer, split="train") -> DatasetDict:
         fpb = load_dataset("financial_phrasebank", "sentences_allagree", split=split)
         datasets.append(fpb)
 
-    # Add more datasets here
-    # if "YourOtherSources" in config.dataset.dataset_names:
-    #     other = load_dataset("your_dataset", split=split)
-    #     datasets.append(other)
-
     if not datasets:
         raise ValueError("No valid datasets found in config.")
 
