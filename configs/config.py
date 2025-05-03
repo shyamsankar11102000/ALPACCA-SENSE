@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 @dataclass
 class ModelConfig:
-    model_name: str = "meta-llama/Llama-3-3B"
+    model_name: str = "meta-llama/Llama-3-7B"
     use_lora: bool = True
     lora_r: int = 8
     lora_alpha: int = 16
