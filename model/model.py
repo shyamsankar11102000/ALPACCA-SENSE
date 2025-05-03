@@ -1,4 +1,3 @@
-# model/model.py
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import get_peft_model, LoraConfig, TaskType
 from configs.config import config
@@ -13,10 +12,9 @@ def load_model():
         cache_dir=config.paths.cache_dir,
     )
 
-    # Replace output head for classification
-    model.lm_head.out_features = 3  # e.g. 3-class sentiment (positive, negative, neutral)
-
-    if config.model.use_lora:
+    if config.model.use_qlora:
+        model = apply_qlora(model)
+    elif config.model.use_lora:
         model = apply_lora(model)
 
     return model

@@ -1,5 +1,3 @@
-# train/trainer.py
-
 import os
 from transformers import Trainer, TrainingArguments, DataCollatorWithPadding
 from configs.config import config
@@ -9,6 +7,7 @@ def get_training_args(output_dir: str):
     return TrainingArguments(
         output_dir=output_dir,
         per_device_train_batch_size=config.training.batch_size,
+        per_device_eval_batch_size=config.training.batch_size,
         gradient_accumulation_steps=config.training.gradient_accumulation_steps,
         learning_rate=config.training.learning_rate,
         num_train_epochs=config.training.num_train_epochs,
@@ -25,7 +24,7 @@ def get_training_args(output_dir: str):
         greater_is_better=True,
         fp16=config.training.fp16,
         seed=config.training.seed,
-        report_to="none",  # or "wandb" if using Weights & Biases
+        report_to="none",
     )
 
 def train_model(model, tokenizer, train_dataset, eval_dataset):

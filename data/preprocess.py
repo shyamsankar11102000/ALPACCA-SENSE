@@ -1,6 +1,7 @@
 import re
 import random
 from transformers import PreTrainedTokenizer
+
 PROMPTS = [
     "Classify the sentiment of the following headline as positive, negative, or neutral:",
     "Determine whether the sentiment in this financial news is positive, negative, or neutral:",
@@ -20,17 +21,15 @@ PROMPTS = [
 ]
 
 def clean_text(text: str) -> str:
-    """Basic text cleaning."""
     text = re.sub(r"http\S+", "", text)
     text = re.sub(r"[^A-Za-z0-9.,!?;:\s]", "", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 def preprocess_example(example: dict, tokenizer: PreTrainedTokenizer, max_length: int) -> dict:
-    """Preprocess a single example with instruction prompt."""
     prompt = random.choice(PROMPTS)
-    instruction_input = f"{prompt} {clean_text(example['input'])}"  # 'input' key holds the headline
-    label = example["output"]  # assumed to be already string label ("Positive", etc.)
+    instruction_input = f"{prompt} {clean_text(example['input'])}"
+    label = example["output"]
 
     encoded = tokenizer(
         instruction_input,
@@ -42,7 +41,6 @@ def preprocess_example(example: dict, tokenizer: PreTrainedTokenizer, max_length
 
     encoded = {k: v.squeeze(0) for k, v in encoded.items()}
     
-    # You may use a mapping like: {"positive": 0, "neutral": 1, "negative": 2}
     label_map = {"positive": 0, "neutral": 1, "negative": 2}
     encoded["labels"] = label_map[label.lower()]
 
